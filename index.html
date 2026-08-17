@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prestigewatch — Feine Zeitmesser</title>
+<meta name="description" content="Prestigewatch — eine kuratierte Sammlung feiner Zeitmesser. Rolex, Patek Philippe, Breitling.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;500;600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0a0a0b;
+    --panel:#131315;
+    --panel-2:#17171a;
+    --hair: rgba(255,255,255,0.09);
+    --hair-strong: rgba(255,255,255,0.16);
+    --off-white:#f1efe9;
+    --grey:#9a9ba0;
+    --grey-dim:#6a6b70;
+    --chrome-1:#e9eaee;
+    --chrome-2:#8b8d95;
+    --chrome-3:#c8cad0;
+    --serif: 'Cormorant', serif;
+    --sans: 'Manrope', sans-serif;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--black);
+    color:var(--off-white);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+
+  a{color:inherit; text-decoration:none;}
+
+  ::selection{background:var(--chrome-3); color:#0a0a0b;}
+
+  /* ---------- utility ---------- */
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+  .eyebrow{
+    font-family:var(--sans);
+    font-size:11px;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    color:var(--grey);
+    font-weight:600;
+  }
+  .hair{
+    height:1px;
+    width:100%;
+    background:linear-gradient(90deg, transparent, var(--chrome-2) 20%, var(--chrome-1) 50%, var(--chrome-2) 80%, transparent);
+    opacity:.35;
+  }
+  .fade-up{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity .9s ease, transform .9s ease;
+  }
+  .fade-up.in{opacity:1; transform:translateY(0);}
+
+  /* ---------- nav ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    backdrop-filter:blur(14px);
+    background:rgba(10,10,11,0.72);
+    border-bottom:1px solid var(--hair);
+  }
+  nav.wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:78px;
+  }
+  .brandmark{display:flex; align-items:center; gap:12px;}
+  .brandmark img{height:34px; width:34px; object-fit:contain; filter:drop-shadow(0 0 6px rgba(255,255,255,.08));}
+  .brandmark span{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:20px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+  }
+  nav ul{list-style:none; display:flex; gap:40px;}
+  nav ul li a{
+    font-size:12.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--grey);
+    transition:color .3s ease;
+  }
+  nav ul li a:hover{color:var(--off-white);}
+  @media (max-width:760px){ nav ul{display:none;} }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding-top:78px;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(ellipse 70% 55% at 50% 38%, rgba(255,255,255,0.05), transparent 70%);
+    pointer-events:none;
+  }
+  .sweep{
+    position:absolute;
+    top:50%; left:50%;
+    width:1px; height:46vmax;
+    background:linear-gradient(to bottom, transparent 0%, rgba(230,230,235,.5) 45%, transparent 100%);
+    transform-origin:top center;
+    transform:translate(-50%,0) rotate(0deg);
+    animation:sweep 40s linear infinite;
+    opacity:.35;
+  }
+  @keyframes sweep{ to{ transform:translate(-50%,0) rotate(360deg); } }
+
+  .hero-logo{
+    width:104px; height:104px;
+    object-fit:contain;
+    margin-bottom:34px;
+    filter:drop-shadow(0 6px 24px rgba(0,0,0,.6));
+    position:relative; z-index:2;
+    animation:rise 1.1s cubic-bezier(.16,1,.3,1) both;
+  }
+  .hero h1{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:clamp(46px, 9vw, 96px);
+    letter-spacing:.05em;
+    line-height:1;
+    text-transform:uppercase;
+    background:linear-gradient(180deg, #ffffff 0%, #cfd0d4 55%, #85868c 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    position:relative; z-index:2;
+    animation:rise 1.1s .1s cubic-bezier(.16,1,.3,1) both;
+  }
+  .hero p.tag{
+    margin-top:22px;
+    font-size:14.5px;
+    letter-spacing:.24em;
+    text-transform:uppercase;
+    color:var(--grey);
+    font-weight:500;
+    position:relative; z-index:2;
+    animation:rise 1.1s .2s cubic-bezier(.16,1,.3,1) both;
+  }
+  @keyframes rise{ from{opacity:0; transform:translateY(18px);} to{opacity:1; transform:translateY(0);} }
+
+  .scroll-cue{
+    position:absolute;
+    bottom:38px; left:50%; transform:translateX(-50%);
+    width:1px; height:52px;
+    background:linear-gradient(to bottom, transparent, var(--grey) 60%, transparent);
+  }
+  .scroll-cue::after{
+    content:"";
+    position:absolute; left:-2px; top:0;
+    width:5px; height:5px; border-radius:50%;
+    background:var(--off-white);
+    animation:drip 2.4s ease-in-out infinite;
+  }
+  @keyframes drip{ 0%{top:0; opacity:0;} 20%{opacity:1;} 100%{top:44px; opacity:0;} }
+
+  /* ---------- section shell ---------- */
+  section{padding:150px 0;}
+  .section-head{
+    display:flex; align-items:flex-end; justify-content:space-between;
+    gap:24px; margin-bottom:64px; flex-wrap:wrap;
+  }
+  .section-head h2{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:clamp(32px, 4.4vw, 52px);
+    letter-spacing:.01em;
+    margin-top:10px;
+  }
+  .section-head .note{
+    max-width:340px;
+    font-size:13.5px;
+    line-height:1.7;
+    color:var(--grey);
+    padding-bottom:6px;
+  }
+
+  /* ---------- intro / manifest ---------- */
+  .intro{
+    display:grid;
+    grid-template-columns: 0.9fr 1.4fr;
+    gap:80px;
+    align-items:start;
+  }
+  @media (max-width:860px){ .intro{grid-template-columns:1fr; gap:32px;} }
+  .intro-lead{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:clamp(24px, 3vw, 32px);
+    line-height:1.5;
+    color:var(--off-white);
+  }
+  .intro-body p{
+    font-size:15px;
+    line-height:1.9;
+    color:var(--grey);
+    max-width:52ch;
+  }
+  .intro-body p + p{margin-top:20px;}
+  .intro-body strong{color:var(--off-white); font-weight:600;}
+  .status-chip{
+    display:inline-flex; align-items:center; gap:9px;
+    margin-top:28px;
+    padding:9px 16px;
+    border:1px solid var(--hair-strong);
+    border-radius:100px;
+    font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--grey);
+  }
+  .status-dot{width:6px; height:6px; border-radius:50%; background:var(--chrome-1); box-shadow:0 0 8px rgba(230,230,235,.7); animation:pulse 2.4s ease-in-out infinite;}
+  @keyframes pulse{ 0%,100%{opacity:.5;} 50%{opacity:1;} }
+
+  /* ---------- collection ---------- */
+  .collection{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:1px;
+    background:var(--hair);
+    border:1px solid var(--hair);
+  }
+  @media (max-width:900px){ .collection{grid-template-columns:1fr;} }
+
+  .watch-card{
+    background:var(--panel);
+    padding:52px 40px 44px;
+    display:flex; flex-direction:column; align-items:center;
+    text-align:center;
+    position:relative;
+  }
+  .watch-card .idx{
+    position:absolute; top:26px; left:28px;
+    font-family:var(--serif);
+    font-size:13px; color:var(--grey-dim);
+    letter-spacing:.06em;
+  }
+  .watch-face{width:168px; height:168px; margin-bottom:34px; transition:transform .6s cubic-bezier(.16,1,.3,1);}
+  .watch-card:hover .watch-face{transform:translateY(-6px) scale(1.03);}
+  .watch-card .brand{
+    font-family:var(--serif);
+    font-size:27px;
+    letter-spacing:.03em;
+    margin-bottom:6px;
+  }
+  .watch-card .model{
+    font-size:11.5px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--grey-dim);
+    margin-bottom:22px;
+  }
+  .watch-card p.desc{
+    font-size:13.8px;
+    line-height:1.85;
+    color:var(--grey);
+    max-width:30ch;
+  }
+  .watch-card .traits{
+    display:flex; gap:8px; flex-wrap:wrap; justify-content:center;
+    margin-top:26px;
+  }
+  .watch-card .traits span{
+    font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--chrome-3);
+    border:1px solid var(--hair-strong);
+    padding:6px 11px; border-radius:2px;
+  }
+
+  /* ---------- journal / events ---------- */
+  .journal-list{
+    display:flex; flex-direction:column;
+  }
+  .journal-item{
+    display:grid;
+    grid-template-columns:120px 1px 1fr;
+    gap:36px;
+    padding:38px 0;
+    border-top:1px solid var(--hair);
+    align-items:start;
+  }
+  .journal-item:last-child{border-bottom:1px solid var(--hair);}
+  .journal-item .date{
+    font-family:var(--serif);
+    font-size:16px;
+    color:var(--grey);
+    padding-top:2px;
+  }
+  .journal-item .stem{background:var(--hair-strong);}
+  .journal-item .content h3{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:22px;
+    margin-bottom:10px;
+  }
+  .journal-item .content p{
+    font-size:14px;
+    line-height:1.85;
+    color:var(--grey);
+    max-width:60ch;
+  }
+  .journal-item .tag{
+    display:inline-block;
+    margin-top:14px;
+    font-size:10.5px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--chrome-3);
+  }
+  @media (max-width:700px){
+    .journal-item{grid-template-columns:1px 1fr; gap:20px;}
+    .journal-item .date{grid-row:1; grid-column:1/-1; margin-bottom:8px;}
+    .journal-item .stem{grid-row:2;}
+  }
+
+  /* ---------- contact / footer ---------- */
+  .cta-panel{
+    text-align:center;
+    padding:110px 32px;
+    background:
+      radial-gradient(ellipse 60% 100% at 50% 0%, rgba(255,255,255,.05), transparent 70%),
+      var(--panel-2);
+    border-top:1px solid var(--hair);
+    border-bottom:1px solid var(--hair);
+  }
+  .cta-panel h2{
+    font-family:var(--serif); font-weight:400;
+    font-size:clamp(30px,4.2vw,48px);
+    margin-bottom:18px;
+  }
+  .cta-panel p{
+    color:var(--grey); font-size:14.5px; max-width:46ch; margin:0 auto 34px;
+    line-height:1.8;
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:15px 30px;
+    border:1px solid var(--chrome-2);
+    color:var(--off-white);
+    font-size:12px; letter-spacing:.18em; text-transform:uppercase;
+    border-radius:2px;
+    transition:all .35s ease;
+  }
+  .btn:hover{background:var(--off-white); color:var(--black); border-color:var(--off-white);}
+
+  footer{padding:56px 0 40px;}
+  .footer-grid{
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;
+  }
+  .footer-brand{display:flex; align-items:center; gap:10px;}
+  .footer-brand img{height:22px; width:22px; object-fit:contain; opacity:.8;}
+  .footer-brand span{font-family:var(--serif); font-size:15px; letter-spacing:.1em; text-transform:uppercase; color:var(--grey);}
+  footer .links{display:flex; gap:26px;}
+  footer .links a{font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--grey-dim); transition:color .3s ease;}
+  footer .links a:hover{color:var(--off-white);}
+  footer .fine{margin-top:26px; font-size:11px; color:var(--grey-dim); text-align:center; letter-spacing:.03em;}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="brandmark">
+      <img src="logo.png" alt="Prestigewatch Logo">
+      <span>Prestigewatch</span>
+    </div>
+    <ul>
+      <li><a href="#kollektion">Kollektion</a></li>
+      <li><a href="#journal">Journal</a></li>
+      <li><a href="#kontakt">Kontakt</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="sweep"></div>
+  <img class="hero-logo" src="logo.png" alt="Prestigewatch">
+  <h1>Prestigewatch</h1>
+  <p class="tag">Feine Zeitmesser · Kuratiert für Kenner</p>
+  <div class="scroll-cue"></div>
+</section>
+
+<section id="ueber" class="wrap">
+  <div class="intro">
+    <div class="fade-up">
+      <p class="eyebrow">Philosophie</p>
+    </div>
+    <div class="intro fade-up" style="display:contents;">
+      <div class="intro-lead fade-up">
+        Zeit lässt sich nicht kaufen. Aber die Art, wie man sie trägt, sagt alles.
+      </div>
+      <div class="intro-body fade-up">
+        <p>
+          <strong>Prestigewatch</strong> ist eine private Sammlung feiner Armbanduhren — entstanden aus Leidenschaft
+          für Mechanik, Handwerk und die leisen Details, die eine Uhr von einem bloßen Zeitmesser unterscheiden.
+        </p>
+        <p>
+          Auf diesen Seiten zeigen wir eine Auswahl unserer Sammlung sowie Momente, Begegnungen und Anlässe, die
+          uns geprägt haben. Ein Verkauf ist derzeit nicht vorgesehen — dies ist ein Schaufenster, kein Geschäft.
+        </p>
+        <div class="status-chip"><span class="status-dot"></span> Showroom · Nur zur Ansicht</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="hair"></div></div>
+
+<section id="kollektion" class="wrap">
+  <div class="section-head fade-up">
+    <div>
+      <p class="eyebrow">Kollektion</p>
+      <h2>Drei Häuser, drei Haltungen</h2>
+    </div>
+    <p class="note">Eine kleine, bewusst zusammengestellte Auswahl aus unserer privaten Sammlung — jede Uhr steht
+      für eine eigene Philosophie der Zeitmessung.</p>
+  </div>
+
+  <div class="collection fade-up">
+
+    <div class="watch-card">
+      <span class="idx">01</span>
+      <svg class="watch-face" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="rlxCase" cx="35%" cy="30%" r="75%">
+            <stop offset="0%" stop-color="#e8e9ed"/>
+            <stop offset="55%" stop-color="#9a9ca3"/>
+            <stop offset="100%" stop-color="#54555b"/>
+          </radialGradient>
+          <radialGradient id="rlxDial" cx="50%" cy="40%" r="70%">
+            <stop offset="0%" stop-color="#26262a"/>
+            <stop offset="100%" stop-color="#0d0d0f"/>
+          </radialGradient>
+        </defs>
+        <circle cx="100" cy="100" r="92" fill="url(#rlxCase)"/>
+        <g stroke="#3d3d40" stroke-width="1.4">
+          <g id="flute"></g>
+        </g>
+        <!-- fluted bezel ticks -->
+        <g stroke="#63646a" stroke-width="2.4" stroke-linecap="round">
+          <line x1="100" y1="9" x2="100" y2="19"/><line x1="100" y1="181" x2="100" y2="191"/>
+          <line x1="9" y1="100" x2="19" y2="100"/><line x1="181" y1="100" x2="191" y2="100"/>
+          <line x1="34" y1="34" x2="41" y2="41"/><line x1="159" y1="159" x2="166" y2="166"/>
+          <line x1="34" y1="166" x2="41" y2="159"/><line x1="159" y1="41" x2="166" y2="34"/>
+          <line x1="66" y1="15" x2="70" y2="24"/><line x1="130" y1="15" x2="126" y2="24"/>
+          <line x1="66" y1="185" x2="70" y2="176"/><line x1="130" y1="185" x2="126" y2="176"/>
+          <line x1="15" y1="66" x2="24" y2="70"/><line x1="15" y1="130" x2="24" y2="126"/>
+          <line x1="185" y1="66" x2="176" y2="70"/><line x1="185" y1="130" x2="176" y2="126"/>
+        </g>
+        <circle cx="100" cy="100" r="74" fill="url(#rlxDial)" stroke="#4a4a4d" stroke-width="1"/>
+        <g stroke="#c9cad0" stroke-width="2">
+          <line x1="100" y1="34" x2="100" y2="44"/>
+          <line x1="100" y1="156" x2="100" y2="166"/>
+          <line x1="34" y1="100" x2="44" y2="100"/>
+          <line x1="156" y1="100" x2="166" y2="100"/>
+        </g>
+        <rect x="92" y="93" width="20" height="14" rx="2" fill="#0d0d0f" stroke="#c9cad0" stroke-width="1.2"/>
+        <line x1="100" y1="100" x2="100" y2="60" stroke="#e8e9ed" stroke-width="3.4" stroke-linecap="round"/>
+        <line x1="100" y1="100" x2="128" y2="100" stroke="#e8e9ed" stroke-width="3.4" stroke-linecap="round"/>
+        <circle cx="100" cy="100" r="4" fill="#e8e9ed"/>
+      </svg>
+      <div class="brand">Rolex</div>
+      <div class="model">Oyster Perpetual</div>
+      <p class="desc">Der Inbegriff der Präzision. Ein wasserdichtes Gehäuse, eine gefluteste Lünette und ein
+        Kaliber, das seit Jahrzehnten kaum Kompromisse kennt.</p>
+      <div class="traits"><span>Chronometer</span><span>Edelstahl</span><span>Ikonisch</span></div>
+    </div>
+
+    <div class="watch-card">
+      <span class="idx">02</span>
+      <svg class="watch-face" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="ppCase" cx="35%" cy="30%" r="75%">
+            <stop offset="0%" stop-color="#f0f1f4"/>
+            <stop offset="55%" stop-color="#a6a8ae"/>
+            <stop offset="100%" stop-color="#5c5d63"/>
+          </radialGradient>
+          <radialGradient id="ppDial" cx="50%" cy="42%" r="75%">
+            <stop offset="0%" stop-color="#3a3a3d"/>
+            <stop offset="100%" stop-color="#161618"/>
+          </radialGradient>
+          <pattern id="guilloche" width="10" height="10" patternUnits="userSpaceOnUse">
+            <circle cx="5" cy="5" r="4.4" fill="none" stroke="#4c4c50" stroke-width="0.5"/>
+          </pattern>
+        </defs>
+        <circle cx="100" cy="100" r="90" fill="url(#ppCase)"/>
+        <circle cx="100" cy="100" r="78" fill="url(#ppDial)"/>
+        <circle cx="100" cy="100" r="78" fill="url(#guilloche)" opacity="0.55"/>
+        <circle cx="100" cy="100" r="78" fill="none" stroke="#77787d" stroke-width="1"/>
+        <g stroke="#d7d8dc" stroke-width="1.6">
+          <line x1="100" y1="30" x2="100" y2="40"/><line x1="100" y1="160" x2="100" y2="170"/>
+          <line x1="30" y1="100" x2="40" y2="100"/><line x1="160" y1="100" x2="170" y2="100"/>
+          <line x1="57" y1="43" x2="63" y2="51"/><line x1="143" y1="43" x2="137" y2="51"/>
+          <line x1="57" y1="157" x2="63" y2="149"/><line x1="143" y1="157" x2="137" y2="149"/>
+        </g>
+        <circle cx="100" cy="140" r="15" fill="#232326" stroke="#6c6d72" stroke-width="1"/>
+        <path d="M100 132 A8 8 0 0 1 108 140" fill="none" stroke="#c9cad0" stroke-width="1.4"/>
+        <line x1="100" y1="100" x2="100" y2="65" stroke="#e8e9ed" stroke-width="2" stroke-linecap="round"/>
+        <line x1="100" y1="100" x2="122" y2="100" stroke="#e8e9ed" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="100" cy="100" r="3" fill="#e8e9ed"/>
+      </svg>
+      <div class="brand">Patek&nbsp;Philippe</div>
+      <div class="model">Calatrava</div>
+      <p class="desc">Zurückhaltende Eleganz für den, der weiß, was er trägt. Ein Guillochédial, dezente
+        Mondphase, gebaut für Generationen.</p>
+      <div class="traits"><span>Handaufzug</span><span>Weißgold</span><span>Heritage</span></div>
+    </div>
+
+    <div class="watch-card">
+      <span class="idx">03</span>
+      <svg class="watch-face" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="brCase" cx="35%" cy="30%" r="75%">
+            <stop offset="0%" stop-color="#e6e7eb"/>
+            <stop offset="55%" stop-color="#8f9197"/>
+            <stop offset="100%" stop-color="#48494e"/>
+          </radialGradient>
+          <radialGradient id="brDial" cx="50%" cy="42%" r="75%">
+            <stop offset="0%" stop-color="#2c2c2f"/>
+            <stop offset="100%" stop-color="#0d0d0f"/>
+          </radialGradient>
+        </defs>
+        <circle cx="100" cy="100" r="93" fill="url(#brCase)"/>
+        <g fill="#3d3d40">
+          <rect x="8" y="72" width="14" height="8" rx="1"/>
+          <rect x="8" y="120" width="14" height="8" rx="1"/>
+          <rect x="178" y="72" width="14" height="8" rx="1"/>
+          <rect x="178" y="120" width="14" height="8" rx="1"/>
+        </g>
+        <circle cx="100" cy="100" r="78" fill="#1c1c1f"/>
+        <g stroke="#c9cad0" stroke-width="1.6">
+          <text x="100" y="26" text-anchor="middle" font-size="7" fill="#b9bac0" font-family="Manrope, sans-serif">60</text>
+        </g>
+        <circle cx="100" cy="100" r="68" fill="url(#brDial)" stroke="#57585d" stroke-width="1"/>
+        <g stroke="#cfd0d4" stroke-width="1.5">
+          <line x1="100" y1="34" x2="100" y2="42"/><line x1="100" y1="158" x2="100" y2="166"/>
+          <line x1="34" y1="100" x2="42" y2="100"/><line x1="158" y1="100" x2="166" y2="100"/>
+        </g>
+        <circle cx="72" cy="100" r="14" fill="#242427" stroke="#63646a" stroke-width="1"/>
+        <circle cx="128" cy="100" r="14" fill="#242427" stroke="#63646a" stroke-width="1"/>
+        <circle cx="100" cy="128" r="14" fill="#242427" stroke="#63646a" stroke-width="1"/>
+        <line x1="72" y1="100" x2="72" y2="92" stroke="#c9cad0" stroke-width="1.2"/>
+        <line x1="128" y1="100" x2="128" y2="92" stroke="#c9cad0" stroke-width="1.2"/>
+        <line x1="100" y1="128" x2="100" y2="120" stroke="#c9cad0" stroke-width="1.2"/>
+        <line x1="100" y1="100" x2="100" y2="62" stroke="#e8e9ed" stroke-width="3" stroke-linecap="round"/>
+        <line x1="100" y1="100" x2="118" y2="100" stroke="#e8e9ed" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="100" cy="100" r="3.6" fill="#e8e9ed"/>
+      </svg>
+      <div class="brand">Breitling</div>
+      <div class="model">Navitimer</div>
+      <p class="desc">Für Instrumenten-Liebhaber. Chronographen-Drücker, drei Hilfszifferblätter, entwickelt
+        aus der Welt der Luftfahrt.</p>
+      <div class="traits"><span>Chronograph</span><span>Automatik</span><span>Robust</span></div>
+    </div>
+
+  </div>
+</section>
+
+<div class="wrap"><div class="hair"></div></div>
+
+<section id="journal" class="wrap">
+  <div class="section-head fade-up">
+    <div>
+      <p class="eyebrow">Journal</p>
+      <h2>Ereignisse & Momente</h2>
+    </div>
+    <p class="note">Ausgewählte Stationen unserer Sammlerreise — Ausstellungen, private Begegnungen und Zugänge,
+      die diese Kollektion geformt haben.</p>
+  </div>
+
+  <div class="journal-list fade-up">
+
+    <div class="journal-item">
+      <div class="date">2024</div>
+      <div class="stem"></div>
+      <div class="content">
+        <h3>Der Grundstein</h3>
+        <p>Die ersten Stücke der Sammlung finden zusammen — der Beginn einer Leidenschaft, die aus Interesse an
+          Mechanik und Manufaktur entstanden ist.</p>
+        <span class="tag">Sammlung</span>
+      </div>
+    </div>
+
+    <div class="journal-item">
+      <div class="date">2025</div>
+      <div class="stem"></div>
+      <div class="content">
+        <h3>Private Besichtigung, Genf</h3>
+        <p>Ein Besuch bei einer traditionsreichen Manufaktur — Einblicke in Handwerk, das sich seit Generationen
+          kaum verändert hat.</p>
+        <span class="tag">Reise</span>
+      </div>
+    </div>
+
+    <div class="journal-item">
+      <div class="date">2025</div>
+      <div class="stem"></div>
+      <div class="content">
+        <h3>Erste kuratierte Auswahl</h3>
+        <p>Drei Häuser, drei Haltungen: Rolex, Patek Philippe und Breitling bilden den Kern der aktuellen
+          Sammlung.</p>
+        <span class="tag">Kollektion</span>
+      </div>
+    </div>
+
+    <div class="journal-item">
+      <div class="date">2026</div>
+      <div class="stem"></div>
+      <div class="content">
+        <h3>Prestigewatch geht online</h3>
+        <p>Diese Seite entsteht — ein digitales Schaufenster, um die Sammlung erstmals einer kleinen
+          Öffentlichkeit zu zeigen.</p>
+        <span class="tag">Meilenstein</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="cta-panel">
+  <div class="wrap fade-up">
+    <h2>In Kontakt bleiben</h2>
+    <p>Diese Sammlung ist derzeit nicht käuflich. Für Fragen, Austausch unter Sammlern oder zukünftige
+      Neuigkeiten freuen wir uns über eine Nachricht.</p>
+    <a class="btn" href="mailto:info@prestigewatch.example">Nachricht senden</a>
+  </div>
+</div>
+
+<footer class="wrap">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <img src="logo.png" alt="Prestigewatch">
+      <span>Prestigewatch</span>
+    </div>
+    <div class="links">
+      <a href="#kollektion">Kollektion</a>
+      <a href="#journal">Journal</a>
+      <a href="#kontakt">Kontakt</a>
+    </div>
+  </div>
+  <p class="fine">© 2026 Prestigewatch. Private Sammlung — kein Verkauf. Alle gezeigten Marken sind Eigentum ihrer jeweiligen Inhaber.</p>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {threshold:0.15});
+  document.querySelectorAll('.fade-up').forEach(el=>io.observe(el));
+</script>
+
+</body>
+</html>
